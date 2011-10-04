@@ -27,14 +27,14 @@ install_mysql() {
 SSH_KEY=0
 RDBMS=""
 JANUS=0
-SHELLRC="null"
+SHELLRC=""
 
 message "Select your shell configuration file..."
 select option in "zshrc" "profile" "bash_profile" "bashrc" "Skip"; do
   if [ "$option" != "Skip" ]; then
     SHELLRC=$option
   fi
-  break;;
+  break
 done
 
 message "Generate SSH key and copy it to clipboard?"
@@ -86,7 +86,7 @@ message "Installing..."
   message "Installing rbenv..."
     git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
 
-    if [ -a "$HOME/.$SHELLRC" ]; then
+    if [ "$SHELLRC" != "" ] && [ -a "$HOME/.$SHELLRC" ]; then
       message "Configuring ~/.$SHELLRC..."
       echo '
 #rbenv
@@ -160,7 +160,7 @@ eval "$(rbenv init -)"' >> "$HOME/.$SHELLRC"
   fi
 
 ## Restart shell one final time
-  if [ -a "$HOME/.$SHELLRC" ]; then
+  if [ "$SHELLRC" != "" ] && [ -a "$HOME/.$SHELLRC" ]; then
     source "$HOME/.$SHELLRC"
   fi
 

@@ -1,0 +1,167 @@
+#!/usr/bin/env bash
+
+RUBY=1.9.2-p290
+
+## Functions
+message() {
+  echo; echo "$(tput bold)$(tput setaf 2)$@$(tput sgr0)"
+}
+
+install_postgresql() {
+  message "Installing PostgreSQL..."
+  brew install postgres --no-python
+
+  message "Installing PostgreSQL Ruby gem..."
+  gem install pg --no-rdoc --no-ri
+}
+
+install_mysql() {
+  message "Installing MySQL..."
+  brew install mysql
+
+  message "Installing MySQL Ruby gem..."
+  gem install mysql2 --no-rdoc --no-ri
+}
+
+## AMI options
+SSH_KEY=0
+RDBMS=""
+JANUS=0
+SHELLRC="null"
+
+message "Select your shell configuration file..."
+select option in "zshrc" "profile" "bash_profile" "bashrc" "Skip"; do
+  if [ "$option" != "Skip" ]; then
+    SHELLRC=$option
+  fi
+  break;;
+done
+
+message "Generate SSH key and copy it to clipboard?"
+select option in Yes No; do
+  case $option in
+    "Yes")
+      SSH_KEY=1; break;;
+    "No")
+      break;;
+  esac
+done
+
+message "Select which RDBMS to install..."
+select option in PostgreSQL MySQL All Skip; do
+  case $option in
+    "PostgreSQL")
+      RDBMS="postgresql"; break;;
+    "MySQL")
+      RDBMS="mysql"; break;;
+    "All")
+      RDBMS="all"; break;;
+    "Skip")
+      break;;
+  esac
+done
+
+message "Install Janus?"
+select option in Yes No; do
+  case $option in
+    "Yes")
+      JANUS=1; break;;
+    "No")
+      break;;
+  esac
+done
+
+## Start...
+message "Installing..."
+
+## SSH
+  if [ $SSH_KEY == 1 ]; then
+    message "Generating SSH key..."
+    [[ -f ~/.ssh/id_rsa.pub ]] || ssh-keygen -t rsa
+    [[ -f ~/.ssh/id_rsa.pub ]] && cat ~/.ssh/id_rsa.pub | pbcopy
+    open https://github.com/account/ssh
+  fi
+
+## rbenv
+  message "Installing rbenv..."
+    git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
+
+    if [ -a "$HOME/.$SHELLRC" ]; then
+      message "Configuring ~/.$SHELLRC..."
+      echo '
+#rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"' >> "$HOME/.$SHELLRC"
+      source "$HOME/.$SHELLRC"
+    else
+      echo; echo "$(tput bold)$(tput setaf 1)Manual Shell configuration or selected file not found...$(tput sgr0)"
+    fi
+
+## ruby-build
+  message "Installing ruby-build..."
+    git clone git://github.com/sstephenson/ruby-build.git
+    cd ruby-build
+    echo "$(tput bold)$(tput setaf 1)Password required!$(tput sgr0)"
+    sudo ./install.sh
+    cd ~
+
+## Ruby
+  message "Installing Ruby $RUBY..."
+    rbenv install $RUBY
+    rbenv rehash
+    rbenv global $RUBY
+
+## Homebrew
+  message "Installing Homebrew..."
+    #https://github.com/mxcl/homebrew/wiki/installation
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"
+    brew update
+
+  message "Installing Ack..."
+    brew install ack
+
+  message "Installing Redis..."
+    brew install redis
+
+  message "Installing ImageMagick..."
+    brew install imagemagick
+
+## Ruby Gems
+  message "Updating RubyGems..."
+    gem update --system
+    gem update
+
+  message "Installing Bundler gem..."
+    gem install bundler --no-rdoc --no-ri
+
+  message "Installing Rails gem..."
+    gem install rails --no-rdoc --no-ri
+
+  message "Installing Heroku gem..."
+    gem install heroku --no-rdoc --no-ri
+
+  message "Installing Taps gem..."
+    gem install taps --no-rdoc --no-ri
+
+## RDBMS
+  if [ "$RDBMS" == "postgresql" ]; then
+    install_postgresql
+  elif [ "$RDBMS" == "mysql" ]; then
+    install_mysql
+  elif [ "$RDBMS" == "all" ]; then
+    install_postgresql
+    install_mysql
+  fi
+
+## Janus
+  if [ $JANUS == 1 ]; then
+    message "Installing Janus..."
+    curl https://raw.github.com/carlhuda/janus/master/bootstrap.sh -o - | sh
+  fi
+
+## Restart shell one final time
+  if [ -a "$HOME/.$SHELLRC" ]; then
+    source "$HOME/.$SHELLRC"
+  fi
+
+message "Complete!"; echo

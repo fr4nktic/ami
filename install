@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-RUBY=1.9.2-p290
+RUBY=1.9.3-p0
 
 ## Functions
 message() {

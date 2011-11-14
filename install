@@ -86,7 +86,7 @@ done
 message "Installing..."
 
 ## SSH
-  if [ $SSH_KEY == 1 ]; then
+  if [ "$SSH_KEY" == 1 ]; then
     message "Generating SSH key..."
     [[ -f ~/.ssh/id_rsa.pub ]] || ssh-keygen -t rsa
     [[ -f ~/.ssh/id_rsa.pub ]] && cat ~/.ssh/id_rsa.pub | pbcopy
@@ -128,7 +128,7 @@ eval "$(rbenv init -)"' >> "$HOME/.$SHELLRC"
   install_package "ack"         "Installing Ack..."
   install_package "redis"       "Installing Redis..."
   install_package "imagemagick" "Installing ImageMagick..."
-  if [ $NGINX == 1 ]; then
+  if [ "$NGINX" == 1 ]; then
     install_package "nginx" "Installing Nginx..."
   fi
 

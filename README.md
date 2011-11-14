@@ -1,8 +1,8 @@
-#AMI
+# AMI
 
 AMI (_pronounced Amy /ey-mee/_) is the **A**wesome **M**ac **I**nstaller that sets up a Rails development environment on a Mac.
 
-##Installation
+## Installation
 
 Before using AMI make sure you have [Git](http://git-scm.com/) and [GCC for OS X](https://github.com/kennethreitz/osx-gcc-installer) (_OS X 10.6 or higher required_). No Xcode needed.
 
@@ -10,7 +10,7 @@ Then run this one-liner:
 
     bash <(curl -s https://raw.github.com/frankzilla/ami/master/install)
 
-##What does AMI do?
+## What does AMI do?
 
 AMI configures and installs the following libraries:
 
@@ -21,31 +21,32 @@ AMI configures and installs the following libraries:
 * Ack (A tool for searching within files)
 * Redis (A key-value data store)
 * ImageMagick (An image manipulation library)
-* [Janus](https://github.com/carlhuda/janus) (A Vim distribution - _optional_)
+* Nginx (The web server that can)
 
-###Gems
+### Gems
 
 * Bundler
 * Rails
 * Heroku
 * Taps (push and pull SQL databases between environments)
 
-###RDBMS _(optional)_
+### RDBMS _(optional)_
 
+* SQLite and the sqlite gem
 * PostgreSQL and the pg gem
 * MySQL and the mysql2 gem
 
-##Updating
+## Updating
 
 Upgrade your installation at any time using git.
 
-###ruby-build
+### ruby-build
 
     cd ~/ruby-build
     git pull
     sudo ./install.sh
 
-###rbenv
+### rbenv
 
     cd ~/.rbenv
     git pull

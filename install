@@ -7,26 +7,35 @@ message() {
   echo; echo "$(tput bold)$(tput setaf 2)$@$(tput sgr0)"
 }
 
-install_postgresql() {
-  message "Installing PostgreSQL..."
-  brew install postgres --no-python
+install_gem(){
+  message "$2"
+  gem install "$1" --no-rdoc --no-ri
+}
 
-  message "Installing PostgreSQL Ruby gem..."
-  gem install pg --no-rdoc --no-ri
+install_package(){
+  message "$2"
+  brew install "$1"
+}
+
+install_sqlite(){
+  install_package "sqlite" "Installing SQLite..."
+  install_gem "sqlite" "Installing SQLite Ruby gem..."
+}
+
+install_postgresql() {
+  install_package "postgres" "Installing PostgreSQL..."
+  install_gem "pg" "Installing PostgreSQL Ruby gem..."
 }
 
 install_mysql() {
-  message "Installing MySQL..."
-  brew install mysql
-
-  message "Installing MySQL Ruby gem..."
-  gem install mysql2 --no-rdoc --no-ri
+  install_package "mysql" "Installing MySQL..."
+  install_gem "mysql2" "Installing MySQL Ruby gem..."
 }
 
 ## AMI options
 SSH_KEY=0
+NGINX=0
 RDBMS=""
-JANUS=0
 SHELLRC=""
 
 message "Select your shell configuration file..."
@@ -47,9 +56,21 @@ select option in Yes No; do
   esac
 done
 
-message "Select which RDBMS to install..."
-select option in PostgreSQL MySQL All Skip; do
+message "Install Nginx?"
+select option in Yes No; do
   case $option in
+    "Yes")
+      NGINX=1; break;;
+    "No")
+      break;;
+  esac
+done
+
+message "Select which RDBMS to install..."
+select option in SQLite PostgreSQL MySQL All Skip; do
+  case $option in
+    "SQLite")
+      RDBMS="sqlite"; break;;
     "PostgreSQL")
       RDBMS="postgresql"; break;;
     "MySQL")
@@ -57,16 +78,6 @@ select option in PostgreSQL MySQL All Skip; do
     "All")
       RDBMS="all"; break;;
     "Skip")
-      break;;
-  esac
-done
-
-message "Install Janus?"
-select option in Yes No; do
-  case $option in
-    "Yes")
-      JANUS=1; break;;
-    "No")
       break;;
   esac
 done
@@ -85,7 +96,6 @@ message "Installing..."
 ## rbenv
   message "Installing rbenv..."
     git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
-
     if [ "$SHELLRC" != "" ] && [ -a "$HOME/.$SHELLRC" ]; then
       message "Configuring ~/.$SHELLRC..."
       echo '
@@ -113,50 +123,35 @@ eval "$(rbenv init -)"' >> "$HOME/.$SHELLRC"
 
 ## Homebrew
   message "Installing Homebrew..."
-    #https://github.com/mxcl/homebrew/wiki/installation
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)" #https://github.com/mxcl/homebrew/wiki/installation
     brew update
-
-  message "Installing Ack..."
-    brew install ack
-
-  message "Installing Redis..."
-    brew install redis
-
-  message "Installing ImageMagick..."
-    brew install imagemagick
+  install_package "ack"         "Installing Ack..."
+  install_package "redis"       "Installing Redis..."
+  install_package "imagemagick" "Installing ImageMagick..."
+  if [ $NGINX == 1 ]; then
+    install_package "nginx" "Installing Nginx..."
+  fi
 
 ## Ruby Gems
   message "Updating RubyGems..."
     gem update --system
     gem update
-
-  message "Installing Bundler gem..."
-    gem install bundler --no-rdoc --no-ri
-
-  message "Installing Rails gem..."
-    gem install rails --no-rdoc --no-ri
-
-  message "Installing Heroku gem..."
-    gem install heroku --no-rdoc --no-ri
-
-  message "Installing Taps gem..."
-    gem install taps --no-rdoc --no-ri
+  install_gem "bundler" "Installing Bundler gem..."
+  install_gem "rails"   "Installing Rails gem..."
+  install_gem "heroku"  "Installing Heroku gem..."
+  install_gem "taps"    "Installing Taps gem..."
 
 ## RDBMS
-  if [ "$RDBMS" == "postgresql" ]; then
+  if [ "$RDBMS" == "sqlite" ]; then
+    install_sqlite
+  elif [ "$RDBMS" == "postgresql" ]; then
     install_postgresql
   elif [ "$RDBMS" == "mysql" ]; then
     install_mysql
   elif [ "$RDBMS" == "all" ]; then
+    install_sqlite
     install_postgresql
     install_mysql
-  fi
-
-## Janus
-  if [ $JANUS == 1 ]; then
-    message "Installing Janus..."
-    curl https://raw.github.com/carlhuda/janus/master/bootstrap.sh -o - | sh
   fi
 
 ## Restart shell one final time

@@ -121,17 +121,6 @@ eval "$(rbenv init -)"' >> "$HOME/.$SHELLRC"
     rbenv rehash
     rbenv global $RUBY
 
-## Homebrew
-  message "Installing Homebrew..."
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)" #https://github.com/mxcl/homebrew/wiki/installation
-    brew update
-  install_package "ack"         "Installing Ack..."
-  install_package "redis"       "Installing Redis..."
-  install_package "imagemagick" "Installing ImageMagick..."
-  if [ "$NGINX" == 1 ]; then
-    install_package "nginx" "Installing Nginx..."
-  fi
-
 ## Ruby Gems
   message "Updating RubyGems..."
     gem update --system
@@ -141,6 +130,18 @@ eval "$(rbenv init -)"' >> "$HOME/.$SHELLRC"
   install_gem "heroku"    "Installing Heroku gem..."
   install_gem "taps"      "Installing Taps gem..."
   install_gem "passenger" "Installing Passenger gem..."
+
+## Homebrew
+  message "Installing Homebrew..."
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)" #https://github.com/mxcl/homebrew/wiki/installation
+    brew update
+  install_package "ack"         "Installing Ack..."
+  install_package "redis"       "Installing Redis..."
+  install_package "imagemagick" "Installing ImageMagick..."
+  if [ "$NGINX" == 1 ]; then
+    message "Installing Nginx..."
+    brew install nginx --with-passenger
+  fi
 
 ## RDBMS
   if [ "$RDBMS" == "sqlite" ]; then

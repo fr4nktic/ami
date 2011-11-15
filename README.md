@@ -38,7 +38,11 @@ AMI configures and installs the following libraries:
 
 ## Updating
 
-Upgrade your installation at any time using git.
+### Homebrew
+
+* `brew update` updates formulae and Homebrew itself
+* `brew upgrade [formula]` installs newer version of `formula`
+* `brew upgrade` installs newer versions of outdated packages
 
 ### ruby-build
 

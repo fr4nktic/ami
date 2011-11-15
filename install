@@ -136,10 +136,11 @@ eval "$(rbenv init -)"' >> "$HOME/.$SHELLRC"
   message "Updating RubyGems..."
     gem update --system
     gem update
-  install_gem "bundler" "Installing Bundler gem..."
-  install_gem "rails"   "Installing Rails gem..."
-  install_gem "heroku"  "Installing Heroku gem..."
-  install_gem "taps"    "Installing Taps gem..."
+  install_gem "bundler"   "Installing Bundler gem..."
+  install_gem "rails"     "Installing Rails gem..."
+  install_gem "heroku"    "Installing Heroku gem..."
+  install_gem "taps"      "Installing Taps gem..."
+  install_gem "passenger" "Installing Passenger gem..."
 
 ## RDBMS
   if [ "$RDBMS" == "sqlite" ]; then

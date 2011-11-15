@@ -29,7 +29,6 @@ AMI configures and installs the following libraries:
 * Rails
 * Heroku
 * Taps (push and pull SQL databases between environments)
-* Passenger
 
 ### RDBMS _(optional)_
 
@@ -38,6 +37,13 @@ AMI configures and installs the following libraries:
 * MySQL and the mysql2 gem
 
 ## Updating
+
+### Homebrew
+
+* `brew update` updates formulae and Homebrew itself
+* `brew upgrade [formula]` installs newer version of `formula`
+* `brew upgrade` installs newer versions of outdated packages
+
 
 ### ruby-build
 
@@ -49,9 +55,3 @@ AMI configures and installs the following libraries:
 
     cd ~/.rbenv
     git pull
-
-### Homebrew
-
-* `brew update` updates formulae and Homebrew itself
-* `brew upgrade [formula]` installs newer version of `formula`
-* `brew upgrade` installs newer versions of outdated packages

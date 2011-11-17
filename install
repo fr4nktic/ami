@@ -143,7 +143,6 @@ export PATH="/usr/local/bin:$PATH"' >> "$HOME/.$SHELLRC"
       echo '
 #nginx
 export PATH="/usr/local/sbin:$PATH"' >> "$HOME/.$SHELLRC"
-      source "$HOME/.$SHELLRC"
     fi
   fi
 

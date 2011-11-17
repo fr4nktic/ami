@@ -125,6 +125,14 @@ eval "$(rbenv init -)"' >> "$HOME/.$SHELLRC"
   message "Installing Homebrew..."
     /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)" #https://github.com/mxcl/homebrew/wiki/installation
     brew update
+    if [ "$SHELLRC" != "" ] && [ -a "$HOME/.$SHELLRC" ]; then
+      message "Put Homebrew location in PATH..."
+      echo "
+#homebrew
+export PATH='/usr/local/bin:$PATH'" >> "$HOME/.$SHELLRC"
+      source "$HOME/.$SHELLRC"
+    fi
+
   install_package "ack"         "Installing Ack..."
   install_package "redis"       "Installing Redis..."
   install_package "imagemagick" "Installing ImageMagick..."

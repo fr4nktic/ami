@@ -127,9 +127,9 @@ eval "$(rbenv init -)"' >> "$HOME/.$SHELLRC"
     brew update
     if [ "$SHELLRC" != "" ] && [ -a "$HOME/.$SHELLRC" ]; then
       message "Put Homebrew location in PATH..."
-      echo "
+      echo '
 #homebrew
-export PATH='/usr/local/bin:$PATH'" >> "$HOME/.$SHELLRC"
+export PATH="/usr/local/bin:$PATH"' >> "$HOME/.$SHELLRC"
       source "$HOME/.$SHELLRC"
     fi
 
@@ -138,6 +138,13 @@ export PATH='/usr/local/bin:$PATH'" >> "$HOME/.$SHELLRC"
   install_package "imagemagick" "Installing ImageMagick..."
   if [ "$NGINX" == 1 ]; then
     install_package "nginx" "Installing Nginx..."
+    if [ "$SHELLRC" != "" ] && [ -a "$HOME/.$SHELLRC" ]; then
+      message "Put nginx location in PATH..."
+      echo '
+#nginx
+export PATH="/usr/local/sbin:$PATH"' >> "$HOME/.$SHELLRC"
+      source "$HOME/.$SHELLRC"
+    fi
   fi
 
 ## Ruby Gems

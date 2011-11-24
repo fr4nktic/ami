@@ -133,6 +133,7 @@ export PATH="/usr/local/bin:$PATH"' >> "$HOME/.$SHELLRC"
       source "$HOME/.$SHELLRC"
     fi
 
+  install_package "git"         "Installing Git..."
   install_package "ack"         "Installing Ack..."
   install_package "redis"       "Installing Redis..."
   install_package "imagemagick" "Installing ImageMagick..."

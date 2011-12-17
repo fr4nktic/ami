@@ -43,8 +43,8 @@ AMI configures and installs the following libraries:
 ### Homebrew
 
 * `brew update` updates formulae and Homebrew itself
-* `brew upgrade [formula]` installs newer version of `formula`
 * `brew upgrade` installs newer versions of outdated packages
+* `brew upgrade [formula]` installs newer version of `formula`
 
 
 ### ruby-build

@@ -18,6 +18,7 @@ AMI configures and installs the following libraries:
 * [rbenv](https://github.com/sstephenson/rbenv) and [ruby-build](https://github.com/sstephenson/ruby-build) (Simple Ruby version management)
 * Ruby 1.9.3 stable
 * [Homebrew](https://github.com/mxcl/homebrew) (Package management for OS X)
+* Wget (Download stuff from the internet)
 * Git (Version control of awesomeness)
 * Ack (A tool for searching within files)
 * Redis (A key-value data store)
@@ -56,3 +57,4 @@ AMI configures and installs the following libraries:
 
     cd ~/.rbenv
     git pull
+

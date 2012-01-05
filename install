@@ -154,7 +154,6 @@ export PATH="/usr/local/sbin:$PATH"' >> "$HOME/.$SHELLRC"
     gem update
   install_gem "bundler" "Installing Bundler gem..."
   install_gem "rails"   "Installing Rails gem..."
-  install_gem "heroku"  "Installing Heroku gem..."
   install_gem "taps"    "Installing Taps gem..."
 
 ## RDBMS

@@ -29,7 +29,6 @@ AMI configures and installs the following libraries:
 
 * Bundler
 * Rails
-* Heroku
 * Taps (push and pull SQL databases between environments)
 
 ### RDBMS _(optional)_

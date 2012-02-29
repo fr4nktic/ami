@@ -109,10 +109,9 @@ eval "$(rbenv init -)"' >> "$HOME/.$SHELLRC"
 
 ## ruby-build
   message "Installing ruby-build..."
+    mkdir -p ~/.rbenv/plugins
+    cd ~/.rbenv/plugins
     git clone git://github.com/sstephenson/ruby-build.git
-    cd ruby-build
-    echo "$(tput bold)$(tput setaf 1)Password required!$(tput sgr0)"
-    sudo ./install.sh
     cd ~
 
 ## Ruby
